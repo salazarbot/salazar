@@ -188,7 +188,7 @@ function createSuccessEmbed(code, output, executionTime, isAsync) {
             }
         ])
         .setTimestamp()
-        .setFooter({ text: `${output === null ? 'null' : typeof output} obtido em ${executionTime*100}ms` });
+        .setFooter({ text: `${output === null ? 'null' : typeof output} obtido em ${Math.round(executionTime*100)}ms` });
 }
 
 /**
@@ -215,7 +215,7 @@ function createErrorEmbed(code, error, executionTime) {
             }
         ])
         .setTimestamp()
-        .setFooter({ text: `${error?.name || 'Erro desconhecido'} detectado em ${executionTime*100}ms.` });
+        .setFooter({ text: `${error?.name || 'Erro desconhecido'} detectado em ${Math.round(executionTime*100)}ms.` });
 }
 
 export default {

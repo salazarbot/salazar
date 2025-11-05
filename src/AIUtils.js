@@ -111,7 +111,7 @@ export async function sendRequisition(prompt, model, imageUrls = undefined) {
 
     } else {
       // Apenas texto
-      contents = createUserContent(prompt);
+      contents = prompt;
     }
 
     const response = await ai.models.generateContent({

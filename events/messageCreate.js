@@ -181,7 +181,7 @@ export default {
                 try {
                     var json = JSON.parse("{"+response.text?.split("{")[1]?.split("}")[0]+"}");
                 } catch (error) {
-                    return console.error('Algo deu errado em narração de ação: '+response.text);
+                    return console.error('Algo deu errado em narração de ação: '+response.text, error);
                 }
 
                 if(
@@ -354,7 +354,7 @@ export default {
                 try {
                     var json = JSON.parse("{"+response.text?.split("{")[1]?.split("}")[0]+"}");
                 } catch (error) {
-                    return console.error('Algo deu errado em análise de diplomacia: '+response.text);
+                    return console.error('Algo deu errado em análise de diplomacia: '+response.text, error);
                 }
 
                 if(
