@@ -12,6 +12,7 @@ import path from "path";
 import { REST } from "@discordjs/rest";
 import botConfig from "../config.json" with { type: "json" };
 import { config, setup } from "./Server.js";
+import { pathToFileURL } from "url";
 
 const client = new Client({
     intents: [
@@ -205,7 +206,8 @@ export async function deployCommands(serverId) {
 
     for (const file of commandFiles) {
         // Use import dinâmico em ES module
-        const command = (await import(path.resolve(file))).default;
+        const fileUrl = pathToFileURL(path.resolve(file)).href;
+        const command = (await import(fileUrl)).default;
         if((
             command.min_tier<=serverConfig?.server_tier || 
             !command.min_tier

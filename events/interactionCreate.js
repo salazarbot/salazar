@@ -11,7 +11,7 @@ import {
 } from "discord.js";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import botConfig from "../config.json" with { type: "json" };
 import * as Server from "../src/Server.js";
 import client from "../src/Client.js";
@@ -108,7 +108,8 @@ async function handleButton(interaction) {
     const buttonFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith(".js"));
 
     for (const file of buttonFiles) {
-        const { default: button } = await import(`file://${path.join(buttonsPath, file)}`);
+        const fileUrl = pathToFileURL(path.resolve(path.join(buttonsPath, file))).href;
+        const { default: button } = await import(fileUrl);
         const buttonName = path.basename(file, ".js");
         client.buttons.set(buttonName, button);
     }
@@ -161,7 +162,8 @@ async function handleSelectMenu(interaction) {
     if (fs.existsSync(selectsPath)) {
         const selectFiles = fs.readdirSync(selectsPath).filter(file => file.endsWith(".js"));
         for (const file of selectFiles) {
-            const { default: select } = await import(`file://${path.join(selectsPath, file)}`);
+            const fileUrl = pathToFileURL(path.resolve(path.join(selectsPath, file))).href;
+            const { default: select } = await import(fileUrl);
             const selectName = path.basename(file, ".js");
             client.selects.set(selectName, select);
         }
@@ -207,7 +209,8 @@ async function handleModalSubmit(interaction) {
     if (fs.existsSync(modalsPath)) {
         const modalFiles = fs.readdirSync(modalsPath).filter(file => file.endsWith(".js"));
         for (const file of modalFiles) {
-            const { default: modal } = await import(`file://${path.join(modalsPath, file)}`);
+            const fileUrl = pathToFileURL(path.resolve(path.join(modalsPath, file))).href;
+            const { default: modal } = await import(fileUrl);
             const modalName = path.basename(file, ".js");
             client.modals.set(modalName, modal);
         }
@@ -250,7 +253,8 @@ async function getCommands(dir) {
     const commandFiles = getFiles(dir);
 
     for (const commandFile of commandFiles) {
-        const { default: command } = await import(`file://${commandFile}`);
+        const fileUrl = pathToFileURL(path.resolve(commandFile)).href;
+        const { default: command } = await import(fileUrl);
         commands.set(command.data.toJSON().name, command);
     }
 

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import botConfig from "./config.json" with { type: "json" };
 import client from "./src/Client.js";
 import cron from "node-cron";
@@ -22,7 +22,7 @@ const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
-    const eventModule = await import(`file://${filePath}`);
+    const eventModule = await import(pathToFileURL(path.resolve(filePath)).href);
     const event = eventModule.default || eventModule; // Suporte para export default
 
     if (event.once) {
@@ -37,19 +37,19 @@ const timedPath = path.join(__dirname, 'timed');
 const timedFiles = fs.existsSync(timedPath) ? fs.readdirSync(timedPath).filter(file => file.endsWith(".js")) : [];
 for (const file of timedFiles) {
     const filePath = path.join(timedPath, file);
-    const timedModule = await import(`file://${filePath}`);
+    const timedModule = await import(pathToFileURL(path.resolve(filePath)).href);
     const timed = timedModule.default || timedModule;
 
     if (timed.cron && typeof timed.execute === "function") {
         cron.schedule(timed.cron, async () => {
             try {
                 await timed.execute();
-                //console.log(`[Timed] Executado: ${timed.name}`);
+                console.log(`[Timed] Executado: ${timed.name}`);
             } catch (err) {
                 console.error(`[Timed] Erro ao executar ${timed.name}:`, err);
             }
         });
-        //console.log(`[Timed] Registrado: ${timed.name} (${timed.cron})`);
+        console.log(`[Timed] Registrado: ${timed.name} (${timed.cron})`);
     }
 }
 
@@ -66,7 +66,7 @@ app.use((req, res, next) => {
     next()
 })
 app.listen(port, () => {
-    console.log(`Simple API listening at http://localhost:${port}`);
+    console.log(`API ligada em http://localhost:${port}`);
 });
 app.get('/api/get_channels', (req, res) => {
     const guildId = req.query.guildId;

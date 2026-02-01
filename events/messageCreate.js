@@ -572,7 +572,7 @@ export default {
             const prompt = eval("`" + process.env.PROMPT_PALPITE + "`");
             const imageUrls = message.attachments.filter(m => m.contentType.startsWith('image')).map(m => m.url);
 
-            const response = await sendRequisition(prompt, botConfig.model[2], imageUrls).catch(error => {
+            const response = await sendRequisition(prompt, botConfig.model[botConfig.model.length - 1], imageUrls).catch(error => {
                 return console.error("-- Erro ao gerar palpite de jogador:", error.message);
             });
 
