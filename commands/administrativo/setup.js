@@ -33,13 +33,14 @@ export default {
     async execute(interaction) {
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-            return interaction.editReply({
-                content: `Você precisa ser um administrador para utilizar esse comando.`
+            return interaction.reply({
+                content: `Você precisa ser um administrador para utilizar esse comando.`,
+                ephemeral: true
             });
         }
 
-        // Comece pedindo o nome do servidor via modal
-        await interaction.showModal(
+        // Comece pedindo o nome do servidor via modal - RÁPIDO, sem await
+        interaction.showModal(
             new ModalBuilder()
             .setCustomId('setup_server_name')
             .setTitle('Configuração - Nome do servidor')
