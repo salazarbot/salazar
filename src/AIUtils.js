@@ -1,4 +1,5 @@
 import { GenerateContentResponse, GoogleGenAI, createUserContent } from "@google/genai";
+import * as goog from "@google/genai";
 import botConfig from "../config.json" with { type: "json" };
 import 'dotenv/config';
 
