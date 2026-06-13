@@ -282,6 +282,10 @@ export default {
                 .setTimestamp(interaction.createdAt)
             ]})
 
+            await interaction.channel.send({
+                content: `Você também pode configurar o ${botConfig.name} usando o painel de controle web, acesse: https://salazarbot.vercel.app/dashboard/${interaction.guildId}`
+            });
+
         } catch (err) {
             console.error(err);
             await interaction.editReply(`Ocorreu um erro ao atualizar a configuração.`);

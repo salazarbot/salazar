@@ -108,6 +108,8 @@ export default {
                 )
             ]
         });
+        
+        modalSubmit.channel.send(`Seja rápido(a)! O setup será cancelado automaticamente <t:${Math.floor((Date.now() + 10 * 60 * 1000) / 1000)}:R>.`).catch(() => {});
 
         const collector = modalSubmit.channel.createMessageComponentCollector({
             filter: (i) => i.user.id === interaction.user.id,
@@ -234,7 +236,7 @@ export default {
                         components: []
                     });
                     await i.update({
-                        content: `Agora selecione o **canal de linha do tempo do roleplay (memória e contexto do bot)**. Esse canal será basicamente a enciclopédia do servidor, que o bot vai consultar INTEIRA antes de toda resposta que ele der.`,
+                        content: `Agora selecione o **fórum de linha do tempo do roleplay (memória e contexto do bot)**. Esse canal será basicamente a enciclopédia do servidor, que o bot vai consultar INTEIRA antes de toda resposta que ele der.`,
                         components: [
                             new ActionRowBuilder().addComponents(
                                 new ChannelSelectMenuBuilder()
@@ -249,6 +251,29 @@ export default {
 
                 case 'setup_context_channel':
                     setupDate.server.channels.context = i.values[0];
+
+                    i.guild.channels.cache.get(i.values[0]).type === ChannelType.GuildForum ?
+                        i.guild.channels.cache.get(i.values[0]).threads.create({
+                            name: "Prólogo do RP",
+                            reason: "Thread inicial do RP"
+                        })
+                    :
+                        await i.message?.edit({
+                            content: `Setup em andamento...`,
+                            components: []
+                        });
+                        return await i.update({
+                            content: `Inválido! Precisa ser um fórum. Por favor, selecione o **fórum de linha do tempo do roleplay (memória e contexto do bot)**. Esse canal será basicamente a enciclopédia do servidor, que o bot vai consultar INTEIRA antes de toda resposta que ele der.`,
+                            components: [
+                                new ActionRowBuilder().addComponents(
+                                    new ChannelSelectMenuBuilder()
+                                    .setCustomId("setup_context_channel")
+                                    .setPlaceholder("Escolha o canal de contexto")
+                                    .setMinValues(1)
+                                    .setMaxValues(1)
+                                )
+                            ]
+                        });
 
                     await i.message?.edit({
                         content: `Setup em andamento...`,
@@ -579,8 +604,8 @@ export default {
                                     .setDescription(`O **${botConfig.name}** foi configurado com sucesso neste servidor`)
                                     .addFields([
                                         {
-                                            name: 'Configurações adicionais!',
-                                            value: 'Você pode configurar o bot ainda mais usando o comando `/configuração`. Opções como **prompt adicional** e **tempo para envio de todas as partes da ação** estão disponíveis apenas lá, fora todas as opções do setup.',
+                                            name: 'Continue configurando!',
+                                            value: `Você pode configurar o bot ainda mais usando o site https://salazarbot.vercel.app/dashboard/${interaction.guildId} (ou o comando \`/configuração\`). Muitas configurações extras como **prompt adicional** e **tempo para envio de todas as partes da ação** estão disponíveis apenas lá, fora todas as opções do setup.`,
                                             inline: true
                                         }
                                     ])
