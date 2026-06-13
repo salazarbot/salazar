@@ -56,6 +56,17 @@ export default {
             )
         );
 
+        const modalSubmit = await interaction.awaitModalSubmit({
+            time: 5 * 60 * 1000,
+            filter: (m) => m.user.id === interaction.user.id
+        }).catch(() => null);
+
+        if (!modalSubmit) {
+            return interaction.followUp({
+                content: "⏱ O setup foi cancelado por inatividade."
+            });
+        }
+        
         const serverSetup = await Server.setup(interaction.guildId);
 
         const mongoClient = new MongoClient(process.env.DB_URI, {
@@ -75,17 +86,6 @@ export default {
         if(!setupDate.server) setupDate.server = {};
         setupDate.server.channels = {};
         setupDate.server.roles = {};
-
-        const modalSubmit = await interaction.awaitModalSubmit({
-            time: 5 * 60 * 1000,
-            filter: (m) => m.user.id === interaction.user.id
-        }).catch(() => null);
-
-        if (!modalSubmit) {
-            return interaction.followUp({
-                content: "⏱ O setup foi cancelado por inatividade."
-            });
-        }
 
         const serverName = modalSubmit.fields.getTextInputValue('server_name_input');
         setupDate.server.name = serverName;
