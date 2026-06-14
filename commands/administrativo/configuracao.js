@@ -13,7 +13,10 @@ import {
     SlashCommandChannelOption,
     SlashCommandIntegerOption,
     SlashCommandRoleOption,
-    SlashCommandStringOption
+    SlashCommandStringOption,
+    MessageFlags,
+    ContainerBuilder,
+    TextDisplayBuilder
 } from "discord.js";
 import {
     MongoClient,
@@ -139,13 +142,21 @@ export default {
                     responseCode = responseCode.replace(`${key.includes('.') ? key.split('.')[1] : key}`, Server.optionLabels[key]);
                 });
 
-                return await interaction.editReply({embeds: [
-                    new EmbedBuilder()
-                    .setTitle(`Configuração atual do servidor`)
-                    .setColor(Colors.Blurple)
-                    .addFields(chunkifyText(responseCode, 1016, '\n```').map(chunk => {return {name: 'Configuração atual do servidor', value: "```json\n"+chunk}}))
-                    .setTimestamp(interaction.createdAt)
-                ]})
+                await interaction.channel.send({
+                    content: `Você também pode configurar o ${botConfig.name} usando o painel de controle web, acesse: https://salazarbot.vercel.app/dashboard/${interaction.guildId}`
+                });
+
+                return await interaction.editReply({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [
+                        new ContainerBuilder()
+                        .addTextDisplayComponents([
+                            new TextDisplayBuilder()
+                            .setContent(`## Configuração atual do servidor\n\n\`\`\`json\n${responseCode}\n\`\`\``)
+                        ])
+                        .setAccentColor(Colors.Blurple)
+                    ]
+                })
             }
 
             const value = interaction.options.get(Server.optionsAlike[option])?.value;
