@@ -129,6 +129,11 @@ export default {
             )
             &&
             (
+                serverConfig?.server?.channels?.diplomacy &&
+                !serverConfig?.server?.channels?.diplomacy.includes(message.channelId)
+            )
+            &&
+            (
                 message.channel.type == ChannelType.GuildText || 
                 message.channel.type == ChannelType.PublicThread
             )
@@ -350,9 +355,9 @@ export default {
                     console.error("-- Erro ao gerar contexto de evento:", error.message);
                 });
  
-                var json;
+                let json;
                 try {
-                    var json = JSON.parse("{"+response.text?.split("{")[1]?.split("}")[0]+"}");
+                    json = JSON.parse("{"+response.text?.split("{")[1]?.split("}")[0]+"}");
                 } catch (error) {
                     return console.error('Algo deu errado em análise de diplomacia: '+response.text, error);
                 }
