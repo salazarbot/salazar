@@ -143,7 +143,7 @@ export async function getCurrentDate(guild) {
     if (!serverConfig?.server?.channels?.time) return undefined;
     if (!guild.channels.cache.has(serverConfig.server.channels.time)) return undefined;
     
-    return simplifyString((await guild.channels.cache.get(serverConfig?.server?.channels?.time)?.messages?.fetch())?.first().cleanContent, true)
+    return simplifyString((await guild.channels.cache.get(serverConfig?.server?.channels?.time)?.messages?.fetch())?.first()?.cleanContent || '', true)
 }
 
 /**
