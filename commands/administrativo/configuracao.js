@@ -136,7 +136,7 @@ export default {
                 const replyConfig = await collection.findOne({ server_id: interaction.guildId });
                 const fullConfig = buildFullConfig(replyConfig?.server);
 
-                let responseCode = `${inspect(fullConfig, { depth: 2 })}`.replace('channels', 'Canais').replace('roles', 'Cargos').replace('preferences', 'Preferências');
+                let responseCode = `${inspect(fullConfig, { depth: 2, maxArrayLength: 10, maxStringLength: 200, })}`.replace('channels', 'Canais').replace('roles', 'Cargos').replace('preferences', 'Preferências');
 
                 Object.keys(Server.optionLabels).forEach(key => {
                     responseCode = responseCode.replace(`${key.includes('.') ? key.split('.')[1] : key}`, Server.optionLabels[key]);
