@@ -330,6 +330,7 @@ export default {
         // Interação com NPC e declaração de guerra
         else if (
             serverConfig?.server?.channels?.diplomacy?.includes(message.channelId) &&
+            serverConfig?.server_tier >= 3 &&
             (
                 message.content.length >= (serverConfig?.server?.preferences?.min_diplomacy_length || 200) ||
                 simplifyString(message.content).includes(simplifyString(serverConfig?.server?.preferences?.action_keyword || 'acao'))
