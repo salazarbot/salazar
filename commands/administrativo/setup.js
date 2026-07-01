@@ -252,10 +252,11 @@ export default {
                 case 'setup_context_channel':
                     setupDate.server.channels.context = i.values[0];
 
-                    i.guild.channels.cache.get(i.values[0]).type === ChannelType.GuildForum ?
+                    i.guild.channels.cache.get(i.values[0]).type == ChannelType.GuildForum ?
                         i.guild.channels.cache.get(i.values[0]).threads.create({
                             name: "Prólogo do RP",
-                            reason: "Thread inicial do RP"
+                            reason: "Thread inicial do RP",
+                            message: 'Olá! Esta é a thread inicial do roleplay. Aqui você pode adicionar informações importantes sobre o contexto do prólogo ou da história do servidor. O bot vai consultar este fórum inteiro antes de responder a qualquer ação dos jogadores.\n### Formato a ser seguido:\n```### Data do contexto\nResumo do acontecimento\n-# Países envolvidos```',
                         })
                     :
                         await i.message?.edit({

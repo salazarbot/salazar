@@ -11,6 +11,7 @@ import {
 import * as Server from "../../src/Server.js";
 import { makeRoundFlag, isImageSafe } from "../../src/VisualUtils.js";
 import { simplifyString } from "../../src/StringUtils.js";
+import botConfig from '../../config.json' with { type: 'json' };
 
 export default {
 
@@ -47,9 +48,7 @@ export default {
             content: `Esse servidor não está configurado corretamente. Contate um administrador.`
         });
 
-        if(!serverConfig?.server_tier >= 2) return interaction.editReply({
-            content: `Este servidor não possui o tier necessário para usar esse comando.`
-        });
+        if(serverConfig?.server_tier<2) return interaction.editReply({content: `Essa funcionalidade não está disponível no plano atual do servidor (${botConfig.plans[serverConfig?.server_tier]}). Faça o upgrade para o plano ${botConfig.plans[2]} para liberá-la.`});
 
         if (interaction.options.getSubcommand() === "bandeira") {
             if (!interaction.member.permissions.has(PermissionFlagsBits.CreateGuildExpressions)) {

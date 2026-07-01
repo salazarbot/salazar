@@ -7,7 +7,7 @@ import {
     StringSelectMenuOptionBuilder
 } from 'discord.js';
 import * as Server from '../src/Server.js';
-
+import botConfig from '../config.json' with { type: 'json' };
 const cooldownUsers = {};
 
 export default {
@@ -32,7 +32,7 @@ export default {
         const serverConfig = await Server.config(interaction.guildId);
 
         if (!serverConfig?.server?.channels?.picked_countries) return;
-        if(serverConfig?.server_tier<=2) return interaction.reply({content: 'Essa funcionalidade não está disponível no plano atual do servidor.', flags: [MessageFlags.Ephemeral]});
+        if(serverConfig?.server_tier<2) return interaction.reply({content: `Essa funcionalidade não está disponível no plano atual do servidor (${botConfig.plans[serverConfig?.server_tier]}). Faça o upgrade para o plano ${botConfig.plans[2]} para liberá-la.`, flags: [MessageFlags.Ephemeral]});
 
         const countryCategory = await interaction.guild?.channels.fetch(serverConfig?.server?.channels?.country_category);
         if(countryCategory.type != ChannelType.GuildCategory) return interaction.reply({content: 'A categoria de países não está configurada corretamente', flags: [MessageFlags.Ephemeral]});

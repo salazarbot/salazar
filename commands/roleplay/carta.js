@@ -39,7 +39,7 @@ export default {
             .setDescription('Anexe uma imagem à carta se quiser')
         ),
 
-    min_tier: 1,
+    min_tier: 3,
     ephemeral: true,
 
     /**
@@ -48,9 +48,12 @@ export default {
     async execute(interaction) {
         const serverConfig = Server.config(interaction.guildId);
         if(!interaction.member.roles.cache.has((await serverConfig)?.server?.roles?.player)) return interaction.editReply(`Este comando é restrito para jogadores do RP (<@&${(await serverConfig)?.server?.roles?.player}>).`);
+        
+        if(serverConfig?.server_tier<3) return interaction.editReply({content: `Essa funcionalidade não está disponível no plano atual do servidor (${botConfig.plans[serverConfig?.server_tier]}). Faça o upgrade para o plano ${botConfig.plans[3]} para liberá-la.`});
+
         const countryCategoryId = (await serverConfig)?.server?.channels?.country_category;
         if(!countryCategoryId || (interaction.channel.parentId != countryCategoryId && interaction.channel.parent.parentId != countryCategoryId)) return interaction.editReply(`Esse comando só pode ser usado no seu chat privado do país.`);
-
+        
         const countryChat = interaction.guild.channels.cache.find(c => simplifyString(c.name).includes(simplifyString(interaction.options.get('destinatário').value)));
         if(!countryChat) return interaction.editReply("Não encontrei o chat desse país.")
 

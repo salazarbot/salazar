@@ -15,6 +15,7 @@ export default {
 
             const serverConfig = await config(guild.id);
             if(!serverConfig) return;
+            if(!serverConfig?.server_tier > 0) return;
             const daysToPass = serverConfig?.server?.preferences?.days_to_year;
             if(!daysToPass) return;
             const timePassingChannel = guild.channels.cache.get(serverConfig?.server?.channels?.time);

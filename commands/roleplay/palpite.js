@@ -43,13 +43,11 @@ export default {
         if(!serverConfig) return interaction.editReply({
             content: `Esse servidor não está configurado corretamente. Contate um administrador.`
         });
-        
-        if(!serverConfig?.server_tier >= 2) return interaction.editReply({
-            content: `Este servidor não possui o tier necessário para usar esse comando.`
-        });
 
-        if (serverConfig.server_tier<4 && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) return interaction.editReply({
-            content: "No plano atual deste servidor, este comando é apenas para administradores."
+        if(serverConfig?.server_tier<2) return interaction.editReply({content: `Essa funcionalidade não está disponível no plano atual do servidor (${botConfig.plans[serverConfig?.server_tier]}). Faça o upgrade para o plano ${botConfig.plans[2]} para liberá-la.`});
+
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) return interaction.editReply({
+            content: "Este comando é apenas para administradores."
         });
 
         interaction.editReply({

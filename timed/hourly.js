@@ -21,6 +21,7 @@ export default {
             const randomActionsChannel = guild.channels.cache.get(serverConfig?.server?.channels?.npc_random_actions);
 
             if(!randomActionsChannel) return;
+            if(serverConfig?.server_tier < 3) return;
 
             const actionContext = await getContext(guild);
             const serverRoleplayDate = await getCurrentDate(guild);
