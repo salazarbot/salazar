@@ -11,17 +11,20 @@ Para lidar com os sistemas complexos e tudo que pode influenciar os resultados n
 # [Adicione o Salazar](https://discord.com/oauth2/authorize?client_id=767858186676994070)
 Apesar do uso não ser gratuito, o Salazar é público, e pode ser adicionado em qualquer servidor.
 # Planos do Salazar
-## Plano 1 - Vitalício (R$50)
+## Plano 1 - Vitalício (R$50 uma vez na vida)
 - Narração de ações
 - Narração de guerras
 - Chat de ação secreta
 - Passagem de tempo automática
 ## Plano 2 - Mensal (R$10 por mês)
+- Todas as vantagens do plano 1
+- Possibilidade de migrar de servidor
 - Escolha de país automatizada
 - Gerar bandeira
 - Falar com o Salazar através do /palpite (apenas adms)
-## Plano 3 - Mensal Premium (R$15)
+## Plano 3 - Mensal Premium (R$15 por mês)
+- Todas as vantagens do plano 2
 - Usar /carta
 - Falar com o Salazar através do @ (todos os membros)
-- Ações aleatórias de países npcs
-- Diplomacia com países npc
+- Ações aleatórias de países NPCs
+- Diplomacia com países NPC
