@@ -249,20 +249,21 @@ export default {
                     });
                     break;
 
-                case 'setup_context_channel':
+                case 'setup_context_channel': {
                     setupDate.server.channels.context = i.values[0];
 
-                    i.guild.channels.cache.get(i.values[0]).type == ChannelType.GuildForum ?
+                    if (i.guild.channels.cache.get(i.values[0]).type == ChannelType.GuildForum) {
                         i.guild.channels.cache.get(i.values[0]).threads.create({
                             name: "Prólogo do RP",
                             reason: "Thread inicial do RP",
                             message: 'Olá! Esta é a thread inicial do roleplay. Aqui você pode adicionar informações importantes sobre o contexto do prólogo ou da história do servidor. O bot vai consultar este fórum inteiro antes de responder a qualquer ação dos jogadores.\n### Formato a ser seguido:\n```### Data do contexto\nResumo do acontecimento\n-# Países envolvidos```',
                         })
-                    :
+                    } else {
                         await i.message?.edit({
                             content: `Setup em andamento...`,
                             components: []
                         });
+                        console.log(i.guild.channels.cache.get(i.values[0]).type);
                         return await i.update({
                             content: `Inválido! Precisa ser um fórum. Por favor, selecione o **fórum de linha do tempo do roleplay (memória e contexto do bot)**. Esse canal será basicamente a enciclopédia do servidor, que o bot vai consultar INTEIRA antes de toda resposta que ele der.`,
                             components: [
@@ -275,6 +276,7 @@ export default {
                                 )
                             ]
                         });
+                    };
 
                     await i.message?.edit({
                         content: `Setup em andamento...`,
@@ -293,6 +295,7 @@ export default {
                         ]
                     });
                     break;
+                };
                 
                 case "setup_narrations_channel":
                     setupDate.server.channels.narrations = i.values[0];
